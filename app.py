@@ -5,7 +5,7 @@ import uuid
 import google.generativeai as genai
 from flask import Flask, render_template, request, session, jsonify
 
-genai.configure(api_key="")
+genai.configure(api_key="YOUR_GEMINI_API_KEY")  
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -13,25 +13,28 @@ app.secret_key = os.urandom(24)
 model = genai.GenerativeModel(model_name="models/gemini-1.5-flash")
 
 def process_directory(directory, base_path=""):
-    file_uris = []
+    file_data = []
     for item in os.listdir(directory):
         item_path = os.path.join(directory, item)
         rel_path = os.path.join(base_path, item)
 
         if os.path.isfile(item_path):
             try:
-                # Upload file using Gemini File API
-                uploaded_file = genai.upload_file(path=item_path, mime_type='text/plain')
-                file_uris.append({
-                    "uri": uploaded_file.uri,
-                    "path": rel_path
-                })
-                print(f"DEBUG: Uploaded '{rel_path}' to '{uploaded_file.uri}'")
+                with open(item_path, "rb") as file:
+                    mime_type = "text/plain"
+                    if item_path.endswith((".jpg", ".jpeg", ".png")):
+                        mime_type = "image/jpeg"
+                    file_data.append({
+                        "mime_type": mime_type,
+                        "data": file.read(),
+                        "path": rel_path
+                    })
+                print(f"DEBUG: Uploaded '{rel_path}' successfully")
             except Exception as e:
                 print(f"DEBUG: Error uploading '{rel_path}': {e}")
         elif os.path.isdir(item_path):
-            file_uris.extend(process_directory(item_path, rel_path))
-    return file_uris
+            file_data.extend(process_directory(item_path, rel_path))
+    return file_data
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -51,27 +54,30 @@ def index():
             file.save(file_path)
             print(f"DEBUG: Saved '{file.filename}' to '{file_path}'")
 
-        file_uris = process_directory(upload_path)
-        session['context'] = file_uris
+        all_context = process_directory(upload_path)
+        session['context'] = all_context
 
         # Start a new chat session and set context
+        chat_session = model.start_chat()
         session['chat_history'] = []
-        gemini_context = [{'uri': uri['uri']} for uri in file_uris]
+
+        # Format the initial message and context
+        initial_message = "Use these files as context for future questions:\n"
+        for file_info in all_context:
+            initial_message += f"- {file_info['path']}\n"
+        gemini_context = all_context # The context is already in the correct format
 
         try:
-            initial_message = "Use these files as context for future questions:\n"
-            for file_info in file_uris:
-                initial_message += f"- {file_info['path']} (URI: {file_info['uri']})\n"
-
-            # Create a temporary ChatSession for setting the initial context
-            temp_chat_session = model.start_chat()
-            response = temp_chat_session.send_message(initial_message, context=gemini_context)
+            response = chat_session.send_message(initial_message, context=gemini_context)
             print(f"DEBUG: Gemini initial response: {response.text}")
 
-            # Save only the initial user message to chat history
             session['chat_history'].append({
                 'role': 'user',
                 'content': initial_message
+            })
+            session['chat_history'].append({
+                'role': 'model',
+                'content': response.text
             })
             print("DEBUG: Chat History:", session['chat_history'])
 
@@ -85,17 +91,27 @@ def index():
 @app.route("/chat", methods=["POST"])
 def chat():
     user_message = request.form.get('message')
-    file_uris = session.get('context', [])
+    context = session.get('context', [])
     chat_history = session.get('chat_history', [])
 
-    # Recreate ChatSession from history (NOT NEEDED ANYMORE)
-    #chat_session = model.start_chat(history=chat_history) 
-
-    gemini_context = [{'uri': uri['uri']} for uri in file_uris]
-    full_message = f"""Considering the files you have been provided, {user_message}""" # The complete message including context
+    # Recreate ChatSession from history
+    chat_session = model.start_chat(history=chat_history)
 
     try:
-        response = model.generate_content(gemini_context + [full_message]) 
+        # Send the user message with context
+        chat_message = f"Considering the files you have been provided, {user_message}"
+        response = chat_session.send_message(chat_message, context=context)  
+
+        chat_history.append({
+            'role': 'user',
+            'content': user_message
+        })
+        chat_history.append({
+            'role': 'model',
+            'content': response.text
+        })
+        session['chat_history'] = chat_history
+        print("DEBUG: Chat History:", session['chat_history'])
 
         return response.text
     except Exception as e:
