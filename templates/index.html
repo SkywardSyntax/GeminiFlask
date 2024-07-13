@@ -3,48 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contextual Q&A</title>
+    <title>Simple Chat</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1>Contextual Q&A</h1>
+        <h1>Simple Chat</h1>
 
-        <form method="POST" enctype="multipart/form-data">
-            <input type="file" name="file" accept=".txt"><br><br>
-            <input type="text" name="question" placeholder="Ask your question" size="50"><br><br>
-            <button type="button" id="ask-button">Ask</button>
+        <div id="chat-container">
+        </div>
+
+        <form id="chat-form" method="POST">
+            <input type="text" name="message" placeholder="Type your message" size="50"><br><br>
+            <button type="button" id="send-button">Send</button>
         </form>
 
-        <div id="answer-container">
-            </div>
-
         <script>
-            const askButton = document.getElementById('ask-button');
-            const questionInput = document.querySelector('input[name="question"]');
-            const answerContainer = document.getElementById('answer-container');
+            const sendButton = document.getElementById('send-button');
+            const messageInput = document.querySelector('input[name="message"]');
+            const chatContainer = document.getElementById('chat-container');
 
-            askButton.addEventListener('click', () => {
-                const question = questionInput.value;
+            sendButton.addEventListener('click', () => {
+                const message = messageInput.value;
 
-                fetch('/', { // Send the request to '/' 
+                const userMessage = document.createElement('p');
+                userMessage.textContent = `You: ${message}`;
+                chatContainer.appendChild(userMessage);
+
+                fetch('/', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                     },
-                    body: `question=${question}`,
+                    body: `message=${message}`,
                 })
                 .then(response => response.text())
                 .then(data => {
-                    const answerParagraph = document.createElement('p');
-                    answerParagraph.textContent = data;
-                    answerContainer.innerHTML = ''; 
-                    answerContainer.appendChild(answerParagraph);
+                    const botMessage = document.createElement('p');
+                    botMessage.textContent = `Bot: ${data}`;
+                    chatContainer.appendChild(botMessage);
                 })
                 .catch(error => {
-                    console.error('Error fetching answer:', error);
-                    answerContainer.innerHTML = '<p>An error occurred. Please try again later.</p>';
+                    console.error('Error fetching response:', error);
+                    const errorMessage = document.createElement('p');
+                    errorMessage.textContent = 'An error occurred. Please try again later.';
+                    chatContainer.appendChild(errorMessage);
                 });
+
+                messageInput.value = '';
             });
         </script>
 
