@@ -1,15 +1,10 @@
-/* Add your CSS styles here */
+/* style.css */
 body {
     font-family: sans-serif;
 }
 
-#chat-history {
-    border: 1px solid #ccc;
-    padding: 10px;
-    height: 300px;
-    overflow-y: auto;
-}
-
-#chat-history p {
-    margin-bottom: 5px;
+.container {
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
 }

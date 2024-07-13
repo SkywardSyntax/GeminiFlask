@@ -1,44 +1,57 @@
 import os
 import google.generativeai as genai
-from flask import Flask, render_template, request, session, jsonify
-
-genai.configure(api_key="AIzaSyADryF7SSQmH2YA3VrVPG2No_9OZQaGXM0")
+from flask import Flask, render_template, request, session
+from flask_session import Session
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
-model = genai.GenerativeModel(model_name="models/gemini-1.5-flash")
+# Configure Flask-Session
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
-@app.route("/", methods=["GET"])  # Only GET for now
+# Set your Gemini API key
+genai.configure(api_key="")
+
+# Create uploads directory
+UPLOAD_FOLDER = 'uploads'
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+def load_context_from_file(file_path):
+    with open(file_path, 'r') as file:
+        return file.read()
+
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template("index.html")
+    if request.method == 'POST':
+        if 'file' in request.files:
+            file = request.files['file']
+            if file.filename.endswith('.txt'):
+                file_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+                file.save(file_path)
+                session['context_file'] = file.filename  # Store the file name in the session
+                print("Context file loaded:", session.get('context_file'))
+                # Start a new chat session with the context file as the first message
+                model = genai.GenerativeModel('gemini-1.5-flash')
+                chat = model.start_chat(history=[{'role': 'user', 'parts': [load_context_from_file(file_path)]}])
+                session['chat'] = chat
+                print("Chat session started:", session.get('chat'))
+        elif 'question' in request.form:
+            print("Session in question handling:", session)
+            question = request.form['question']
+            chat = session.get('chat')
+            print("Chat session:", chat)
+            
+            if chat:
+                response = chat.send_message(question)
+                answer = response.text
+                return answer
+            else:
+                return "Please upload a context file first."
+    return render_template('index.html')
 
-@app.route("/chat", methods=["POST"])
-def start_chat():
-    try:
-        # Hardcode a simple text context for testing 
-        context_text = "The quick brown fox jumps over the lazy dog." 
-        session['chat'] = model.start_chat(context=[{'text': context_text}])
-
-        return jsonify({'message': 'Chat session started with context!'}), 200
-
-    except Exception as e:
-        return jsonify({'message': f"Error starting chat: {e}"}), 500
-
-@app.route("/chat", methods=["POST"])
-def chat():
-    user_message = request.form.get('message')
-    chat_session = session.get('chat')
-
-    if not chat_session:
-        return jsonify({'error': 'No chat session found. Please start a chat first.'}), 400
-
-    try:
-        response = chat_session.send_message(user_message)
-        return response.text
-
-    except Exception as e:
-        return f"Error: {e}"
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(debug=True)

@@ -1,71 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Gemini Context Chat</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contextual Q&A</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Upload a Directory for Context</h1>
-    <form id="upload-form" method="POST" enctype="multipart/form-data">
-        <input type="file" name="file" multiple webkitdirectory>
-        <button type="submit">Upload</button>
-    </form>
-    <div id="upload-message"></div>
+    <div class="container">
+        <h1>Contextual Q&A</h1>
 
-    <h1>Chat with Gemini</h1>
-    <form id="chat-form" method="POST" action="/chat">
-        <input type="text" name="message" id="message" placeholder="Enter your message">
-        <button type="submit">Send</button>
-    </form>
-    <div id="chat-history"></div>
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" accept=".txt"><br><br>
+            <input type="text" name="question" placeholder="Ask your question" size="50"><br><br>
+            <button type="button" id="ask-button">Ask</button>
+        </form>
 
-    <script>
-        const chatForm = document.getElementById('chat-form');
-        const messageInput = document.getElementById('message');
-        const chatHistory = document.getElementById('chat-history');
-        const uploadForm = document.getElementById('upload-form');
-        const uploadMessage = document.getElementById('upload-message');
+        <div id="answer-container">
+            </div>
 
-        chatForm.addEventListener('submit', async (event) => {
-            event.preventDefault();
-            const message = messageInput.value;
-            messageInput.value = '';
-            chatHistory.innerHTML += `<p><strong>You:</strong> ${message}</p>`;
+        <script>
+            const askButton = document.getElementById('ask-button');
+            const questionInput = document.querySelector('input[name="question"]');
+            const answerContainer = document.getElementById('answer-container');
 
-            const response = await fetch('/chat', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `message=${encodeURIComponent(message)}`,
-            });
+            askButton.addEventListener('click', () => {
+                const question = questionInput.value;
 
-            const data = await response.text();
-            chatHistory.innerHTML += `<p><strong>Gemini:</strong> ${data}</p>`;
-        });
-
-        uploadForm.addEventListener('submit', async (event) => {
-            event.preventDefault();
-
-            const formData = new FormData(uploadForm);
-
-            try {
-                const response = await fetch('/', {
+                fetch('/', { // Send the request to '/' 
                     method: 'POST',
-                    body: formData,
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `question=${question}`,
+                })
+                .then(response => response.text())
+                .then(data => {
+                    const answerParagraph = document.createElement('p');
+                    answerParagraph.textContent = data;
+                    answerContainer.innerHTML = ''; 
+                    answerContainer.appendChild(answerParagraph);
+                })
+                .catch(error => {
+                    console.error('Error fetching answer:', error);
+                    answerContainer.innerHTML = '<p>An error occurred. Please try again later.</p>';
                 });
+            });
+        </script>
 
-                if (response.ok) {
-                    const data = await response.json();
-                    uploadMessage.textContent = data.message;
-                } else {
-                    uploadMessage.textContent = 'Error uploading directory.';
-                }
-            } catch (error) {
-                console.error("Upload error:", error);
-                uploadMessage.textContent = 'Error uploading directory.';
-            }
-        });
-    </script>
+    </div>
 </body>
 </html>
