@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple Chat</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
 </head>
 <body>
     <div class="container">
         <h1>Simple Chat</h1>
 
-        <div id="chat-container">
+        <div id="chat-container" class="chat-container">
         </div>
 
-        <form id="chat-form" method="POST">
+        <form id="chat-form" class="chat-form" method="POST">
             <input type="text" name="message" placeholder="Type your message" size="50"><br><br>
-            <button type="button" id="send-button">Send</button>
+            <button type="button" id="send-button" class="send-button">Send</button>
         </form>
 
         <script>
@@ -28,6 +28,7 @@
 
                 const userMessage = document.createElement('p');
                 userMessage.textContent = `You: ${message}`;
+                userMessage.classList.add('user-message');
                 chatContainer.appendChild(userMessage);
 
                 fetch('/', {
@@ -41,6 +42,7 @@
                 .then(data => {
                     const botMessage = document.createElement('p');
                     botMessage.textContent = `Bot: ${data}`;
+                    botMessage.classList.add('bot-message');
                     chatContainer.appendChild(botMessage);
                 })
                 .catch(error => {
