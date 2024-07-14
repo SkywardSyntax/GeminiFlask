@@ -137,6 +137,10 @@ body.dark-mode button[type="submit"]:active, body.dark-mode #dark-mode-toggle:ac
     background-color: #999;
 }
 
+body.dark-mode h1 {
+    color: #fff;
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;

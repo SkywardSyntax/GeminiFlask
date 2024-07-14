@@ -16,18 +16,18 @@
     <div class="container">
         <div id="chat-container">
             {% for message in chat_history %}
-                {% if message.role == 'user' %}
-                    <p class="user-message">You: 
+                {% if message.role == 'model' %}
+                    <p class="bot-message">Bot: 
                         {% if message.parts is defined %} 
-                            {{ message.parts[0] }} 
+                            {{ message.parts }} 
                         {% else %}
                             {{ message.content }} 
                         {% endif %}
                     </p>
-                {% elif message.role == 'model' %}
-                    <p class="bot-message">Bot: 
+                {% elif message.role == 'user' %}
+                    <p class="user-message">You: 
                         {% if message.parts is defined %} 
-                            {{ message.parts }} 
+                            {{ message.parts[0] }} 
                         {% else %}
                             {{ message.content }} 
                         {% endif %}
