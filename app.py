@@ -1,6 +1,6 @@
 import os
 import google.generativeai as genai
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, jsonify
 from flask_session import Session
 
 app = Flask(__name__)
@@ -19,23 +19,31 @@ def index():
     chat_history = session.get('chat_history', [])
 
     if request.method == 'POST':
-        user_message = request.form['message']
-        chat_history.append({"role": "user", "parts": [user_message]})
+        if 'clear-history' in request.form:
+            session['chat_history'] = []
+            chat_history = []
+            return jsonify({'status': 'success'}) 
+        else:
+            user_message = request.form['message']
+            chat_history.append({"role": "user", "parts": [user_message]})
 
-        # Generate response from Gemini
-        model = genai.GenerativeModel('gemini-1.5-flash')
-        chat = model.start_chat(history=chat_history)
+            # Generate response from Gemini
+            model = genai.GenerativeModel('gemini-1.5-flash')
+            chat = model.start_chat(history=chat_history)
 
-        # Correctly formatted message for send_message
-        formatted_message = {"role": "user", "parts": [user_message]} 
-        response = chat.send_message(formatted_message)
+            formatted_message = {"role": "user", "parts": [user_message]} 
+            response = chat.send_message(formatted_message)
 
-        bot_response = response.text
-        chat_history.append({"role": "model", "parts": bot_response})
+            bot_response = response.text
+            chat_history.append({"role": "model", "parts": bot_response})
 
-        session['chat_history'] = chat_history
+            session['chat_history'] = chat_history
 
-        return render_template('index.html', chat_history=chat_history)
+            return jsonify({'answer': bot_response})  
+
+    # Removed the code that added the initial "Hi" message
+
+    return render_template('index.html', chat_history=chat_history)
 
 if __name__ == '__main__':
     app.run(debug=True)

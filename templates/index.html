@@ -14,16 +14,16 @@
             {% for message in chat_history %}
                 {% if message.role == 'user' %}
                     <p class="user-message">You: 
-                        {% if message.content.parts is defined %} 
-                            {{ message.content.parts[0].text }} 
+                        {% if message.parts is defined %} 
+                            {{ message.parts[0] }} 
                         {% else %}
                             {{ message.content }} 
                         {% endif %}
                     </p>
-                {% elif message.role == 'assistant' %}
+                {% elif message.role == 'model' %}
                     <p class="bot-message">Bot: 
-                        {% if message.content.parts is defined %} 
-                            {{ message.content.parts[0].text }} 
+                        {% if message.parts is defined %} 
+                            {{ message.parts }} 
                         {% else %}
                             {{ message.content }} 
                         {% endif %}
@@ -32,10 +32,73 @@
             {% endfor %}
         </div>
 
-        <form method="POST">
-            <input type="text" name="message" placeholder="Enter your message" required>
+        <form id="chat-form" method="POST">
+            <input type="text" id="message" name="message" placeholder="Enter your message" required>
             <button type="submit">Send</button>
         </form>
+        <form id="clear-form" method="POST">
+            <button type="submit" name="clear-history" value="clear">Clear History</button>
+        </form>
     </div>
+
+    <script>
+        const chatForm = document.getElementById('chat-form');
+        const clearForm = document.getElementById('clear-form'); 
+        const chatContainer = document.getElementById('chat-container');
+
+        chatForm.addEventListener('submit', (event) => {
+            event.preventDefault(); 
+
+            const messageInput = document.getElementById('message');
+            const userMessage = messageInput.value;
+
+            displayMessage('user', userMessage); 
+
+            fetch('/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `message=${userMessage}`,
+            })
+            .then(response => response.json()) // Parse response as JSON
+            .then(data => {
+                displayMessage('model', data.answer); 
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                displayMessage('error', 'An error occurred.');
+            });
+
+            messageInput.value = ''; 
+        });
+
+        clearForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            chatContainer.innerHTML = ''; 
+
+            fetch('/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'clear-history=clear', 
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                displayMessage('error', 'An error occurred.');
+            });
+        });
+
+        function displayMessage(role, message) {
+            const messageElement = document.createElement('p');
+            messageElement.classList.add(role === 'user' ? 'user-message' : 'bot-message');
+            messageElement.textContent = `${role === 'user' ? 'You' : 'Bot'}: ${message}`;
+            chatContainer.appendChild(messageElement);
+
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    </script>
 </body>
 </html>
