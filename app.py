@@ -14,20 +14,31 @@ Session(app)
 # Set your Gemini API key
 genai.configure(api_key="")
 
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         if 'message' in request.form:
             message = request.form['message']
-            chat = session.get('chat')
-            
-            if not chat:
+            chat_history = session.get('chat_history', [])  # Get history from session
+
+            # Start a new chat if no history exists
+            if not chat_history:
                 model = genai.GenerativeModel('gemini-1.5-flash')
                 chat = model.start_chat(history=[])
-                session['chat'] = chat
-            
+            else:
+                # Reconstruct chat from history (you'll need to implement this)
+                model = genai.GenerativeModel('gemini-1.5-flash')
+                chat = model.start_chat(history=chat_history)  
+
             response = chat.send_message(message)
             answer = response.text
+
+            # Update chat history
+            chat_history.append({"role": "user", "content": message})
+            chat_history.append({"role": "assistant", "content": answer})
+            session['chat_history'] = chat_history  # Store updated history
+
             return answer
     return render_template('index.html')
 
