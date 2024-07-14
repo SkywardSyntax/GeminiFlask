@@ -14,6 +14,11 @@ Session(app)
 # Set your Gemini API key
 genai.configure(api_key="")
 
+# Initialize stats.txt if it doesn't exist
+if not os.path.exists('stats.txt'):
+    with open('stats.txt', 'w') as f:
+        f.write('0')
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     chat_history = session.get('chat_history', [])
@@ -39,11 +44,25 @@ def index():
 
             session['chat_history'] = chat_history
 
+            # Increment the request count in stats.txt
+            with open('stats.txt', 'r+') as f:
+                count = int(f.read())
+                count += 1
+                f.seek(0)
+                f.write(str(count))
+                f.truncate()
+
             return jsonify({'answer': bot_response})  
 
     # Removed the code that added the initial "Hi" message
 
     return render_template('index.html', chat_history=chat_history)
+
+@app.route('/stats')
+def stats():
+    with open('stats.txt', 'r') as f:
+        count = f.read()
+    return render_template('stats.html', count=count)
 
 if __name__ == '__main__':
     app.run(debug=True)

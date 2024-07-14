@@ -149,3 +149,42 @@ body.dark-mode h1 {
         opacity: 1;
     }
 }
+
+/* Styles for the new stats page */
+.stats-container {
+    width: 90%;
+    max-width: 600px;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stats-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2em;
+    color: #333;
+}
+
+.stats-container p {
+    text-align: center;
+    font-size: 1.2em;
+    color: #666;
+}
+
+/* Dark mode styles for the stats page */
+body.dark-mode .stats-container {
+    background-color: #555;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .stats-container h1 {
+    color: #fff;
+}
+
+body.dark-mode .stats-container p {
+    color: #ccc;
+}
