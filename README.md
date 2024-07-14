@@ -11,3 +11,29 @@ To run this application:
 ```
 flask --debug run
 ```
+
+## Visual Improvements
+
+We have made several visual improvements to the chat application to enhance its appearance and user experience.
+
+### New Styles and Layout
+
+- Updated the background color to a gradient for a more modern look.
+- Added padding and margin to the chat messages for better spacing.
+- Updated the button styles to be more visually appealing.
+- Added hover effects to the buttons for better interactivity.
+- Updated the font styles for a more modern look.
+
+### Updated HTML Structure
+
+- Updated the structure of the chat container for better layout.
+- Added a header section with a logo or title for better branding.
+- Updated the form structure for better alignment and spacing.
+- Added a footer section with additional information or links.
+
+### Screenshots
+
+Here are some screenshots of the improved chat application:
+
+![Chat Application Screenshot 1](screenshots/screenshot1.png)
+![Chat Application Screenshot 2](screenshots/screenshot2.png)

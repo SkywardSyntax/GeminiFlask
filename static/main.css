@@ -1,7 +1,7 @@
 /* style.css */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f4f4f9;
+    background: linear-gradient(to right, #f4f4f9, #e0e0e0);
     color: #333;
     margin: 0;
     padding: 0;
@@ -21,6 +21,7 @@ body {
 h1 {
     font-size: 2.5em;
     margin-bottom: 20px;
+    font-family: 'Helvetica Neue', sans-serif;
 }
 
 #chat-container {
@@ -39,6 +40,7 @@ h1 {
     border: 1px solid #ddd;
     border-radius: 8px;
     margin-bottom: 10px;
+    font-family: 'Helvetica Neue', sans-serif;
 }
 
 #send-button {
@@ -48,6 +50,8 @@ h1 {
     border: none;
     border-radius: 8px;
     cursor: pointer;
+    font-family: 'Helvetica Neue', sans-serif;
+    transition: background-color 0.3s ease;
 }
 
 #send-button:hover {
@@ -57,9 +61,15 @@ h1 {
 .user-message {
     text-align: right;
     color: #007bff;
+    padding: 5px;
+    margin: 5px 0;
+    font-family: 'Helvetica Neue', sans-serif;
 }
 
 .bot-message {
     text-align: left;
     color: #333;
+    padding: 5px;
+    margin: 5px 0;
+    font-family: 'Helvetica Neue', sans-serif;
 }
