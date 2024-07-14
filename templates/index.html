@@ -7,9 +7,13 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h1>Conversational Gemini Chat</h1>
+    <header>
+        <div class="header-container">
+            <h1>Conversational Gemini Chat</h1>
+        </div>
+    </header>
 
+    <div class="container">
         <div id="chat-container">
             {% for message in chat_history %}
                 {% if message.role == 'user' %}
@@ -41,6 +45,12 @@
         </form>
         <button id="dark-mode-toggle">Toggle Dark Mode</button>
     </div>
+
+    <footer>
+        <div class="footer-container">
+            <p>&copy; 2023 Conversational Gemini Chat. All rights reserved.</p>
+        </div>
+    </footer>
 
     <script>
         const chatForm = document.getElementById('chat-form');
