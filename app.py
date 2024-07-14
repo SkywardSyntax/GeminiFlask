@@ -1,6 +1,6 @@
 import os
 import google.generativeai as genai
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, jsonify
 from flask_session import Session
 
 app = Flask(__name__)
@@ -18,8 +18,9 @@ genai.configure(api_key="")
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        if 'message' in request.form:
-            message = request.form['message']
+        data = request.get_json()
+        if 'message' in data:
+            message = data['message']
             chat_history = session.get('chat_history', [])  # Get history from session
 
             # Start a new chat if no history exists
@@ -39,8 +40,13 @@ def index():
             chat_history.append({"role": "assistant", "content": answer})
             session['chat_history'] = chat_history  # Store updated history
 
-            return answer
+            return jsonify({'answer': answer})
     return render_template('index.html')
+
+@app.route('/chat-history', methods=['GET'])
+def chat_history():
+    chat_history = session.get('chat_history', [])
+    return jsonify(chat_history)
 
 if __name__ == '__main__':
     app.run(debug=True)

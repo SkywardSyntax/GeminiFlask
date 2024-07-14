@@ -30,7 +30,7 @@
         const messageInput = document.querySelector('input[name="message"]');
         const chatContainer = document.getElementById('chat-container');
 
-        sendButton.addEventListener('click', () => {
+        function sendMessage() {
             const message = messageInput.value;
 
             const userMessage = document.createElement('p');
@@ -60,6 +60,20 @@
             });
 
             messageInput.value = '';
+        }
+
+        sendButton.addEventListener('click', sendMessage);
+
+        messageInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                sendMessage();
+            }
+        });
+
+        document.getElementById('chat-form').addEventListener('submit', (event) => {
+            event.preventDefault();
+            sendMessage();
         });
     </script>
 </body>
