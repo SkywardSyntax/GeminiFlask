@@ -57,8 +57,6 @@ def index():
 
             return jsonify({'answer': bot_response_markdown})  
 
-    # Removed the code that added the initial "Hi" message
-
     return render_template('index.html', chat_history=chat_history)
 
 @app.route('/stats')
