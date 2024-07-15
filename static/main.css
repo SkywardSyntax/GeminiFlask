@@ -273,8 +273,21 @@ body.dark-mode #request-chart {
     background-color: #000;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    animation: pulsate 1.5s infinite; /* P5689 */
 }
 
 body.dark-mode #dark-mode-circle {
     background-color: #fff;
+}
+
+@keyframes pulsate { /* P8e4f */
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
