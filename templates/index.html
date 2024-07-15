@@ -116,7 +116,14 @@
 			chatContainer.appendChild(messageElement);
 
 			chatContainer.scrollTop = chatContainer.scrollHeight;
+			chatContainer.innerHTML = ''; // Clear existing messages
+			chat_history.forEach(msg => displayMessage(msg.role, msg.parts ? msg.parts[0] : msg.content)); // Re-add all messages from chat_history
 		}
+
+		// Load chat history on page load
+		document.addEventListener('DOMContentLoaded', () => {
+			chat_history.forEach(msg => displayMessage(msg.role, msg.parts ? msg.parts[0] : msg.content));
+		});
 	</script>
 </body>
 </html>
