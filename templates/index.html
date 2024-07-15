@@ -38,10 +38,10 @@
 
         <form id="chat-form" method="POST">
             <input type="text" id="message" name="message" placeholder="Enter your message" required>
-            <button type="submit">Send</button>
+            <button type="submit">&#9650;</button> <!-- Up arrow icon -->
         </form>
-        <form id="clear-form" method="POST">
-            <button type="submit" name="clear-history" value="clear">Clear History</button>
+        <form id="clear-form" method="POST" style="display: none;"> <!-- Initially hidden -->
+            <button type="submit" name="clear-history" value="clear">&#128465;</button> <!-- Trash can icon -->
         </form>
     </div>
 
@@ -72,6 +72,7 @@
             .then(data => {
                 displayMessage('model', data.answer);
                 hideTypingIndicator();
+                clearForm.style.display = 'block'; // Show the clear history button after the model responds
             })
             .catch(error => {
                 console.error('Error:', error);

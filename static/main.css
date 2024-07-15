@@ -71,6 +71,8 @@ input[type="text"] {
     border: 1px solid #ccc;
     border-radius: 4px;
     transition: border-color 0.3s ease;
+    background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 input[type="text"]:focus {
@@ -86,6 +88,8 @@ button[type="submit"], #dark-mode-toggle {
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
+    background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 button[type="submit"]:hover, #dark-mode-toggle:hover {

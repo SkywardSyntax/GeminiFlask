@@ -27,8 +27,12 @@ if not os.path.exists('request_data.json'):
     with open('request_data.json', 'w') as f:
         json.dump({"timestamps": [], "counts": []}, f)
 
+# Flag to track if the model has responded at least once
+model_responded = False
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    global model_responded
     chat_history = session.get('chat_history', [])
 
     if request.method == 'POST':
@@ -71,10 +75,13 @@ def index():
                 json.dump(data, f)
                 f.truncate()
 
+            # Set the flag to True when the model responds
+            model_responded = True
+
             return jsonify({'answer': bot_response_markdown})
 
     chat_history = session.get('chat_history', [])
-    return render_template('index.html', chat_history=chat_history)
+    return render_template('index.html', chat_history=chat_history, model_responded=model_responded)
 
 @app.route('/stats')
 def stats():
