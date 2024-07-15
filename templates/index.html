@@ -13,6 +13,8 @@
         </div>
     </header>
 
+    <div id="dark-mode-circle"></div> <!-- Circle for dark mode toggle -->
+
     <div class="container">
         <div id="chat-container">
             {% for message in chat_history %}
@@ -41,14 +43,13 @@
         <form id="clear-form" method="POST">
             <button type="submit" name="clear-history" value="clear">Clear History</button>
         </form>
-        <button id="dark-mode-toggle">Toggle Dark Mode</button>
     </div>
 
     <script>
         const chatForm = document.getElementById('chat-form');
         const clearForm = document.getElementById('clear-form');
         const chatContainer = document.getElementById('chat-container');
-        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        const darkModeCircle = document.getElementById('dark-mode-circle');
         const typingIndicator = document.getElementById('typing-indicator');
 
         chatForm.addEventListener('submit', (event) => {
@@ -99,7 +100,7 @@
             });
         });
 
-        darkModeToggle.addEventListener('click', () => {
+        darkModeCircle.addEventListener('click', () => {
             document.body.classList.toggle('dark-mode');
         });
 
