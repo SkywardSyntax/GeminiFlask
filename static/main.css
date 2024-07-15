@@ -2,7 +2,7 @@ body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
-    background: linear-gradient(135deg, #f4f4f4, #e0e0e0);
+    background: #f4f4f4;
     transition: background 0.3s ease;
 }
 
@@ -98,7 +98,7 @@ button[type="submit"]:active, #dark-mode-toggle:active {
 }
 
 body.dark-mode {
-    background: linear-gradient(135deg, #333, #444);
+    background: #333;
     color: #fff;
 }
 
@@ -193,10 +193,6 @@ body.dark-mode .stats-container h1 {
 
 body.dark-mode .stats-container p {
     color: #ccc;
-}
-
-.footer-spacer {
-    flex-grow: 1;
 }
 
 /* Styles for the new header and footer sections */
