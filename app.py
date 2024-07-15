@@ -35,7 +35,7 @@ def index():
         if 'clear-history' in request.form:
             session['chat_history'] = []
             chat_history = []
-            return jsonify({'status': 'success'}) 
+            return jsonify({'status': 'success'})
         else:
             user_message = request.form['message']
             user_message_markdown = markdown.markdown(user_message)
@@ -45,7 +45,7 @@ def index():
             model = genai.GenerativeModel('gemini-1.5-flash')
             chat = model.start_chat(history=chat_history)
 
-            formatted_message = {"role": "user", "parts": [user_message_markdown]} 
+            formatted_message = {"role": "user", "parts": [user_message_markdown]}
             response = chat.send_message(formatted_message)
 
             bot_response = response.text
@@ -71,7 +71,7 @@ def index():
                 json.dump(data, f)
                 f.truncate()
 
-            return jsonify({'answer': bot_response_markdown})  
+            return jsonify({'answer': bot_response_markdown})
 
     chat_history = session.get('chat_history', [])
     return render_template('index.html', chat_history=chat_history)
