@@ -43,7 +43,7 @@ def index():
 
             bot_response = response.text
             bot_response_markdown = markdown.markdown(bot_response)
-            chat_history.append({"role": "model", "parts": bot_response_markdown})
+            chat_history.append({"role": "model", "parts": [bot_response_markdown]})
 
             session['chat_history'] = chat_history
 
