@@ -231,3 +231,37 @@ body.dark-mode .footer-container {
 body.dark-mode #request-chart {
     background-color: #555;
 }
+
+/* Styles for the typing indicator */
+.typing-indicator {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.typing-indicator .dot {
+    width: 8px;
+    height: 8px;
+    margin: 0 2px;
+    background-color: #ccc;
+    border-radius: 50%;
+    animation: typing 1.4s infinite ease-in-out both;
+}
+
+.typing-indicator .dot:nth-child(1) {
+    animation-delay: -0.32s;
+}
+
+.typing-indicator .dot:nth-child(2) {
+    animation-delay: -0.16s;
+}
+
+@keyframes typing {
+    0%, 80%, 100% {
+        transform: scale(0);
+    }
+    40% {
+        transform: scale(1);
+    }
+}

@@ -28,6 +28,12 @@
             {% endfor %}
         </div>
 
+        <div id="typing-indicator" class="typing-indicator">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+
         <form id="chat-form" method="POST">
             <input type="text" id="message" name="message" placeholder="Enter your message" required>
             <button type="submit">Send</button>
@@ -51,6 +57,7 @@
         const clearForm = document.getElementById('clear-form');
         const chatContainer = document.getElementById('chat-container');
         const darkModeToggle = document.getElementById('dark-mode-toggle');
+        const typingIndicator = document.getElementById('typing-indicator');
 
         chatForm.addEventListener('submit', (event) => {
             event.preventDefault();
@@ -59,6 +66,7 @@
             const userMessage = messageInput.value;
 
             displayMessage('user', userMessage);
+            showTypingIndicator();
 
             fetch('/', {
                 method: 'POST',
@@ -70,10 +78,12 @@
             .then(response => response.json())
             .then(data => {
                 displayMessage('model', data.answer);
+                hideTypingIndicator();
             })
             .catch(error => {
                 console.error('Error:', error);
                 displayMessage('error', 'An error occurred.');
+                hideTypingIndicator();
             });
 
             messageInput.value = '';
@@ -115,6 +125,14 @@
 
             chatContainer.scrollTop = chatContainer.scrollHeight;
             sessionStorage.setItem('chatHistory', JSON.stringify(chatContainer.innerHTML));
+        }
+
+        function showTypingIndicator() {
+            typingIndicator.style.display = 'flex';
+        }
+
+        function hideTypingIndicator() {
+            typingIndicator.style.display = 'none';
         }
 
         window.addEventListener('load', () => {
