@@ -1,122 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conversational Gemini Chat</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Conversational Gemini Chat</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
 </head>
 <body>
-    <header>
-        <div class="header-container">
-            <h1>Conversational Gemini Chat</h1>
-        </div>
-    </header>
+	<header>
+		<div class="header-container">
+			<h1>Conversational Gemini Chat</h1>
+		</div>
+	</header>
 
-    <div class="container">
-        <div id="chat-container">
-            {% for message in chat_history %}
-                {% if message.role == 'model' %}
-                    <p class="bot-message">Bot: 
-                        {% if message.parts is defined %} 
-                            {{ message.parts }} 
-                        {% else %}
-                            {{ message.content }} 
-                        {% endif %}
-                    </p>
-                {% elif message.role == 'user' %}
-                    <p class="user-message">You: 
-                        {% if message.parts is defined %} 
-                            {{ message.parts[0] }} 
-                        {% else %}
-                            {{ message.content }} 
-                        {% endif %}
-                    </p>
-                {% endif %}
-            {% endfor %}
-        </div>
+	<div class="container">
+		<div id="chat-container">
+			{% for message in chat_history %}
+				{% if message.role == 'model' %}
+					<p class="bot-message">Bot: 
+						{% if message.parts is defined %} 
+							{{ message.parts|safe }} 
+						{% else %}
+							{{ message.content|safe }} 
+						{% endif %}
+					</p>
+				{% elif message.role == 'user' %}
+					<p class="user-message">You: 
+						{% if message.parts is defined %} 
+							{{ message.parts[0]|safe }} 
+						{% else %}
+							{{ message.content|safe }} 
+						{% endif %}
+					</p>
+				{% endif %}
+			{% endfor %}
+		</div>
 
-        <form id="chat-form" method="POST">
-            <input type="text" id="message" name="message" placeholder="Enter your message" required>
-            <button type="submit">Send</button>
-        </form>
-        <form id="clear-form" method="POST">
-            <button type="submit" name="clear-history" value="clear">Clear History</button>
-        </form>
-        <button id="dark-mode-toggle">Toggle Dark Mode</button>
-    </div>
+		<form id="chat-form" method="POST">
+			<input type="text" id="message" name="message" placeholder="Enter your message" required>
+			<button type="submit">Send</button>
+		</form>
+		<form id="clear-form" method="POST">
+			<button type="submit" name="clear-history" value="clear">Clear History</button>
+		</form>
+		<button id="dark-mode-toggle">Toggle Dark Mode</button>
+	</div>
 
-    <div class="footer-spacer"></div>
+	<div class="footer-spacer"></div>
 
-    <footer>
-        <div class="footer-container">
-            <p>&copy; 2023 Conversational Gemini Chat. All rights reserved.</p>
-        </div>
-    </footer>
+	<footer>
+		<div class="footer-container">
+			<p>&copy; 2023 Conversational Gemini Chat. All rights reserved.</p>
+		</div>
+	</footer>
 
-    <script>
-        const chatForm = document.getElementById('chat-form');
-        const clearForm = document.getElementById('clear-form'); 
-        const chatContainer = document.getElementById('chat-container');
-        const darkModeToggle = document.getElementById('dark-mode-toggle');
+	<script>
+		const chatForm = document.getElementById('chat-form');
+		const clearForm = document.getElementById('clear-form'); 
+		const chatContainer = document.getElementById('chat-container');
+		const darkModeToggle = document.getElementById('dark-mode-toggle');
 
-        chatForm.addEventListener('submit', (event) => {
-            event.preventDefault(); 
+		chatForm.addEventListener('submit', (event) => {
+			event.preventDefault(); 
 
-            const messageInput = document.getElementById('message');
-            const userMessage = messageInput.value;
+			const messageInput = document.getElementById('message');
+			const userMessage = messageInput.value;
 
-            displayMessage('user', userMessage); 
+			displayMessage('user', userMessage); 
 
-            fetch('/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `message=${userMessage}`,
-            })
-            .then(response => response.json()) // Parse response as JSON
-            .then(data => {
-                displayMessage('model', data.answer); 
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                displayMessage('error', 'An error occurred.');
-            });
+			fetch('/', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded',
+				},
+				body: `message=${userMessage}`,
+			})
+			.then(response => response.json()) // Parse response as JSON
+			.then(data => {
+				displayMessage('model', data.answer); 
+			})
+			.catch(error => {
+				console.error('Error:', error);
+				displayMessage('error', 'An error occurred.');
+			});
 
-            messageInput.value = ''; 
-        });
+			messageInput.value = ''; 
+		});
 
-        clearForm.addEventListener('submit', (event) => {
-            event.preventDefault();
+		clearForm.addEventListener('submit', (event) => {
+			event.preventDefault();
 
-            chatContainer.innerHTML = ''; 
+			chatContainer.innerHTML = ''; 
 
-            fetch('/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: 'clear-history=clear', 
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                displayMessage('error', 'An error occurred.');
-            });
-        });
+			fetch('/', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded',
+				},
+				body: 'clear-history=clear', 
+			})
+			.catch(error => {
+				console.error('Error:', error);
+				displayMessage('error', 'An error occurred.');
+			});
+		});
 
-        darkModeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-        });
+		darkModeToggle.addEventListener('click', () => {
+			document.body.classList.toggle('dark-mode');
+		});
 
-        function displayMessage(role, message) {
-            const messageElement = document.createElement('p');
-            messageElement.classList.add(role === 'user' ? 'user-message' : 'bot-message');
-            messageElement.textContent = `${role === 'user' ? 'You' : 'Bot'}: ${message}`;
-            chatContainer.appendChild(messageElement);
+		function displayMessage(role, message) {
+			const messageElement = document.createElement('p');
+			messageElement.classList.add(role === 'user' ? 'user-message' : 'bot-message');
+			messageElement.innerHTML = `${role === 'user' ? 'You' : 'Bot'}: ${message}`;
+			chatContainer.appendChild(messageElement);
 
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
-    </script>
+			chatContainer.scrollTop = chatContainer.scrollHeight;
+		}
+	</script>
 </body>
 </html>

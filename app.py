@@ -2,6 +2,7 @@ import os
 import google.generativeai as genai
 from flask import Flask, render_template, request, session, jsonify
 from flask_session import Session
+import markdown
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -30,17 +31,19 @@ def index():
             return jsonify({'status': 'success'}) 
         else:
             user_message = request.form['message']
-            chat_history.append({"role": "user", "parts": [user_message]})
+            user_message_markdown = markdown.markdown(user_message)
+            chat_history.append({"role": "user", "parts": [user_message_markdown]})
 
             # Generate response from Gemini
             model = genai.GenerativeModel('gemini-1.5-flash')
             chat = model.start_chat(history=chat_history)
 
-            formatted_message = {"role": "user", "parts": [user_message]} 
+            formatted_message = {"role": "user", "parts": [user_message_markdown]} 
             response = chat.send_message(formatted_message)
 
             bot_response = response.text
-            chat_history.append({"role": "model", "parts": bot_response})
+            bot_response_markdown = markdown.markdown(bot_response)
+            chat_history.append({"role": "model", "parts": bot_response_markdown})
 
             session['chat_history'] = chat_history
 
@@ -52,9 +55,7 @@ def index():
                 f.write(str(count))
                 f.truncate()
 
-            return jsonify({'answer': bot_response})  
-
-    # Removed the code that added the initial "Hi" message
+            return jsonify({'answer': bot_response_markdown})  
 
     return render_template('index.html', chat_history=chat_history)
 
