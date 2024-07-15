@@ -15,7 +15,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Set your Gemini API key
-genai.configure(api_key="")
+genai.configure(api_key=os.environ['GEMINI_API'])
 
 # Initialize stats.txt if it doesn't exist
 if not os.path.exists('stats.txt'):
