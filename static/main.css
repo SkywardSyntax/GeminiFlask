@@ -197,7 +197,7 @@ body.dark-mode .stats-container p {
 
 /* Styles for the new header and footer sections */
 .header-container {
-    background-color: #4CAF50;
+    background-color: #cccccc;
     color: white;
     padding: 10px;
     text-align: center;
