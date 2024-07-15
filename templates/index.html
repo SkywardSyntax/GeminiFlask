@@ -116,7 +116,15 @@
 			chatContainer.appendChild(messageElement);
 
 			chatContainer.scrollTop = chatContainer.scrollHeight;
+			sessionStorage.setItem('chatHistory', chatContainer.innerHTML);
 		}
+
+		window.addEventListener('load', () => {
+			const savedChatHistory = sessionStorage.getItem('chatHistory');
+			if (savedChatHistory) {
+				chatContainer.innerHTML = savedChatHistory;
+			}
+		});
 	</script>
 </body>
 </html>
