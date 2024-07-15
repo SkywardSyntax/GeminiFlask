@@ -3,6 +3,8 @@ import google.generativeai as genai
 from flask import Flask, render_template, request, session, jsonify
 from flask_session import Session
 import markdown
+import json
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -19,6 +21,11 @@ genai.configure(api_key="")
 if not os.path.exists('stats.txt'):
     with open('stats.txt', 'w') as f:
         f.write('0')
+
+# Initialize request_data.json if it doesn't exist
+if not os.path.exists('request_data.json'):
+    with open('request_data.json', 'w') as f:
+        json.dump({"timestamps": [], "counts": []}, f)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -55,6 +62,15 @@ def index():
                 f.write(str(count))
                 f.truncate()
 
+            # Update request_data.json with the new request count and timestamp
+            with open('request_data.json', 'r+') as f:
+                data = json.load(f)
+                data["timestamps"].append(datetime.now().isoformat())
+                data["counts"].append(count)
+                f.seek(0)
+                json.dump(data, f)
+                f.truncate()
+
             return jsonify({'answer': bot_response_markdown})  
 
     return render_template('index.html', chat_history=chat_history)
@@ -70,6 +86,12 @@ def request_count():
     with open('stats.txt', 'r') as f:
         count = f.read()
     return jsonify({'count': int(count)})
+
+@app.route('/request-data')
+def request_data():
+    with open('request_data.json', 'r') as f:
+        data = json.load(f)
+    return jsonify(data)
 
 if __name__ == '__main__':
     app.run(debug=True)

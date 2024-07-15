@@ -196,3 +196,36 @@ body.dark-mode .stats-container p {
 .footer-spacer {
     flex-grow: 1;
 }
+
+/* Styles for the new header and footer sections */
+.header-container {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+.footer-container {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+/* Dark mode styles for the header and footer */
+body.dark-mode .header-container,
+body.dark-mode .footer-container {
+    background-color: #333;
+    color: #fff;
+}
+
+/* Styles for the chart */
+#request-chart {
+    margin: 20px auto;
+    max-width: 100%;
+}
+
+/* Dark mode styles for the chart */
+body.dark-mode #request-chart {
+    background-color: #555;
+}

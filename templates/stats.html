@@ -5,13 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stats</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+    <header>
+        <div class="header-container">
+            <h1>Stats Page</h1>
+        </div>
+    </header>
+
     <div class="container">
         <h1>Total Requests</h1>
         <p>The total number of requests made is: <span id="request-count">{{ count }}</span></p>
+        <canvas id="request-chart" width="400" height="200"></canvas>
         <button id="dark-mode-toggle">Toggle Dark Mode</button>
     </div>
+
+    <div class="footer-spacer"></div>
+
+    <footer>
+        <div class="footer-container">
+            <p>&copy; 2023 Stats Page. All rights reserved.</p>
+        </div>
+    </footer>
 
     <script>
         const darkModeToggle = document.getElementById('dark-mode-toggle');
@@ -29,7 +45,43 @@
                 .catch(error => console.error('Error fetching request count:', error));
         }
 
+        function updateRequestChart() {
+            fetch('/request-data')
+                .then(response => response.json())
+                .then(data => {
+                    const ctx = document.getElementById('request-chart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: data.timestamps,
+                            datasets: [{
+                                label: 'Request Count Over Time',
+                                data: data.counts,
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1,
+                                fill: false
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                x: {
+                                    type: 'time',
+                                    time: {
+                                        unit: 'minute'
+                                    }
+                                },
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                })
+                .catch(error => console.error('Error fetching request data:', error));
+        }
+
         setInterval(updateRequestCount, 5000); // Update every 5 seconds
+        setInterval(updateRequestChart, 60000); // Update chart every minute
     </script>
 </body>
 </html>
