@@ -52,7 +52,7 @@ def index():
             bot_response_markdown = markdown.markdown(bot_response)
             chat_history.append({"role": "model", "parts": [bot_response_markdown]})
 
-            session['chat_history'] = chat_history
+            session['chat_history'] = json.dumps(chat_history)
 
             # Increment the request count in stats.txt
             with open('stats.txt', 'r+') as f:
@@ -73,6 +73,7 @@ def index():
 
             return jsonify({'answer': bot_response_markdown})  
 
+    chat_history = json.loads(session.get('chat_history', '[]'))
     return render_template('index.html', chat_history=chat_history)
 
 @app.route('/stats')

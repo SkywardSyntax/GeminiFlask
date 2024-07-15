@@ -19,13 +19,13 @@
 				{% if message.role == 'model' %}
 					<p class="bot-message">Bot: 
 						{% if message.parts is defined %} 
-							{{ message.parts|safe }} 
+							{{ message.parts[0]|safe }} 
 						{% else %}
 							{{ message.content|safe }} 
 						{% endif %}
 					</p>
 				{% elif message.role == 'user' %}
-					<p class="user-message">You: 
+						<p class="user-message">You: 
 						{% if message.parts is defined %} 
 							{{ message.parts[0]|safe }} 
 						{% else %}
