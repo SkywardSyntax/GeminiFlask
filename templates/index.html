@@ -116,7 +116,30 @@
 			chatContainer.appendChild(messageElement);
 
 			chatContainer.scrollTop = chatContainer.scrollHeight;
+			applyMessageStyles();
 		}
+
+		function applyMessageStyles() {
+			const messages = chatContainer.querySelectorAll('p');
+			messages.forEach(message => {
+				if (message.classList.contains('user-message')) {
+					message.style.textAlign = 'right';
+					message.style.color = '#4CAF50';
+					message.style.backgroundColor = '#e8f5e9';
+					message.style.borderRadius = '15px 15px 0 15px';
+					message.style.alignSelf = 'flex-end';
+				} else if (message.classList.contains('bot-message')) {
+					message.style.textAlign = 'left';
+					message.style.color = '#2196F3';
+					message.style.backgroundColor = '#e3f2fd';
+					message.style.borderRadius = '15px 15px 15px 0';
+					message.style.alignSelf = 'flex-start';
+				}
+			});
+		}
+
+		// Apply styles to existing messages on page load
+		document.addEventListener('DOMContentLoaded', applyMessageStyles);
 	</script>
 </body>
 </html>
