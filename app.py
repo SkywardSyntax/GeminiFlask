@@ -64,5 +64,11 @@ def stats():
         count = f.read()
     return render_template('stats.html', count=count)
 
+@app.route('/request-count')
+def request_count():
+    with open('stats.txt', 'r') as f:
+        count = f.read()
+    return jsonify({'count': int(count)})
+
 if __name__ == '__main__':
     app.run(debug=True)

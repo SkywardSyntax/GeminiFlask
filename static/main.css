@@ -188,3 +188,36 @@ body.dark-mode .stats-container h1 {
 body.dark-mode .stats-container p {
     color: #ccc;
 }
+
+/* P8044 */
+.footer-spacer {
+    flex-grow: 1;
+}
+
+/* P491e */
+.user-message {
+    text-align: right;
+    color: #4CAF50;
+    margin: 5px 0;
+    padding: 5px 10px;
+    background-color: #e8f5e9;
+    border-radius: 4px;
+    display: inline-block;
+    max-width: 80%;
+    animation: fadeIn 0.5s ease;
+    align-self: flex-end;
+}
+
+/* P82cd */
+.bot-message {
+    text-align: left;
+    color: #2196F3;
+    margin: 5px 0;
+    padding: 5px 10px;
+    background-color: #e3f2fd;
+    border-radius: 4px;
+    display: inline-block;
+    max-width: 80%;
+    animation: fadeIn 0.5s ease;
+    align-self: flex-start;
+}
