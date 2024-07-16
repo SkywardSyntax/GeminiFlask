@@ -28,7 +28,7 @@ if not os.path.exists('stats.txt'):
 # Initialize request_data.json if it doesn't exist
 if not os.path.exists('request_data.json'):
     with open('request_data.json', 'w') as f:
-        json.dump({"timestamps": [], "counts": []}, f)
+        json.dump({"timestamps": [], "counts": [], "user_messages": [], "bot_responses": []}, f)
 
 # Flag to track if the model has responded at least once
 model_responded = False
@@ -78,6 +78,8 @@ def index():
                 data = json.load(f)
                 data["timestamps"].append(datetime.now().isoformat())
                 data["counts"].append(count)
+                data["user_messages"].append(user_message)
+                data["bot_responses"].append(bot_response)
                 f.seek(0)
                 json.dump(data, f)
                 f.truncate()
@@ -94,7 +96,11 @@ def index():
 def stats():
     with open('stats.txt', 'r') as f:
         count = f.read()
-    return render_template('stats.html', count=count)
+    with open('request_data.json', 'r') as f:
+        data = json.load(f)
+    latest_user_messages = data["user_messages"][-5:]
+    latest_bot_responses = data["bot_responses"][-5:]
+    return render_template('stats.html', count=count, latest_user_messages=latest_user_messages, latest_bot_responses=latest_bot_responses)
 
 @app.route('/request-count')
 def request_count():
@@ -131,6 +137,14 @@ def generate_summary():
     summary = response.text
 
     return jsonify({'summary': summary})
+
+@app.route('/latest-messages')
+def latest_messages():
+    with open('request_data.json', 'r') as f:
+        data = json.load(f)
+    latest_user_messages = data["user_messages"][-5:]
+    latest_bot_responses = data["bot_responses"][-5:]
+    return jsonify({'user_messages': latest_user_messages, 'bot_responses': latest_bot_responses})
 
 if __name__ == '__main__':
     app.run(debug=True)

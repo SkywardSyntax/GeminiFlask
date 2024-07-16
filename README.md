@@ -86,3 +86,28 @@ Here are some screenshots of the new animations:
 ![Chat Messages Animation](screenshots/chat_messages_animation.png)
 ![Stats Page Animation](screenshots/stats_page_animation.png)
 ![Header and Footer Animation](screenshots/header_footer_animation.png)
+
+## New Feature: Display Latest User Messages and Bot Responses
+
+We have added a new feature to the stats page that displays the latest user messages and bot responses.
+
+### How to Use the Latest Messages Feature
+
+1. Engage in a conversation with the chat model.
+2. Navigate to the stats page to view the latest user messages and bot responses.
+3. The latest messages will be displayed in a list format, showing the most recent interactions.
+
+### Technical Details
+
+- The latest messages feature is implemented in `app.py`, `templates/stats.html`, `static/main.css`, and `README.md`.
+- The `/stats` endpoint in `app.py` is updated to include the latest user messages and bot responses.
+- A new section is added to `templates/stats.html` to display the latest messages.
+- JavaScript is added to `templates/stats.html` to fetch and display the latest messages.
+- Styles are added to `static/main.css` to style the new section displaying the latest messages.
+
+### Screenshots
+
+Here are some screenshots of the latest messages feature:
+
+![Latest Messages Screenshot 1](screenshots/latest_messages_screenshot1.png)
+![Latest Messages Screenshot 2](screenshots/latest_messages_screenshot2.png)

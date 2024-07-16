@@ -398,3 +398,24 @@ body.dark-mode #generate-summary:hover {
 body.dark-mode #generate-summary:active {
     background-color: #999;
 }
+
+/* Styles for the new section displaying the latest user messages and bot responses */
+#latest-messages {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+#latest-messages li {
+    background-color: #f9f9f9;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+body.dark-mode #latest-messages li {
+    background-color: #444;
+    box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+}

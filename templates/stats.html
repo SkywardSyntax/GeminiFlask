@@ -36,7 +36,7 @@
         const darkModeCircle = document.getElementById('dark-mode-circle');
 
         darkModeCircle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
+            document.body.classList.toggle('.dark-mode');
             const isDarkMode = document.body.classList.contains('dark-mode');
             localStorage.setItem('darkMode', isDarkMode ? 'enabled' : 'disabled');
         });
@@ -86,13 +86,13 @@
         }
 
         function updateLatestMessages() {
-            fetch('/request-data')
+            fetch('/latest-messages')
                 .then(response => response.json())
                 .then(data => {
                     const latestMessagesList = document.getElementById('latest-messages');
                     latestMessagesList.innerHTML = ''; // Clear existing list
-                    data.user_messages.slice(-5).forEach((message, index) => {
-                        const botResponse = data.bot_responses[data.bot_responses.length - 5 + index];
+                    data.user_messages.forEach((message, index) => {
+                        const botResponse = data.bot_responses[index];
                         latestMessagesList.innerHTML += `<li>User: ${message}<br>Bot: ${botResponse}</li>`;
                     });
                 })
