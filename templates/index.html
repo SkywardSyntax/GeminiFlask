@@ -41,7 +41,7 @@
             <button type="submit">▲</button> <!-- Up arrow icon -->
         </form>
         <form id="clear-form" method="POST" style="display: {{ 'block' if model_responded else 'none' }};"> <!-- Initially hidden -->
-            <button type="submit" name="clear-history" value="clear"></button> <!-- Trash can icon -->
+            <button type="submit" name="clear-history" value="clear">🗑️</button> <!-- Trash can icon -->
         </form>
         <button id="download-chat-history" style="display: {{ 'block' if model_responded else 'none' }};">Download Chat History</button> <!-- New button for downloading chat history -->
         <button id="generate-summary" style="display: {{ 'block' if model_responded else 'none' }};">Generate Summary</button> <!-- New button for generating summary -->

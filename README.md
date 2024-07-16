@@ -62,3 +62,27 @@ Here are some screenshots of the summary generation feature:
 
 ![Summary Generation Screenshot 1](screenshots/summary_screenshot1.png)
 ![Summary Generation Screenshot 2](screenshots/summary_screenshot2.png)
+
+## New Animations
+
+We have added subtle animations to the chat application to enhance the user experience without being too distracting.
+
+### Added Animations
+
+- **Chat Messages**: Added a fade-in effect to the chat messages for a smoother appearance.
+- **Stats Page Elements**: Added a slide-in effect to the stats page elements for a more dynamic look.
+- **Header and Footer**: Added a fade-in effect to the header and footer sections for a more cohesive design.
+
+### Technical Details
+
+- The animations are implemented in `static/main.css`.
+- The HTML structure in `templates/index.html` and `templates/stats.html` has been updated to include the new animations.
+- The animations are designed to be subtle and enhance the overall user experience without being too distracting.
+
+### Screenshots
+
+Here are some screenshots of the new animations:
+
+![Chat Messages Animation](screenshots/chat_messages_animation.png)
+![Stats Page Animation](screenshots/stats_page_animation.png)
+![Header and Footer Animation](screenshots/header_footer_animation.png)

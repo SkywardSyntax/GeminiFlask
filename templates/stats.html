@@ -16,11 +16,17 @@
 
     <div id="dark-mode-circle"></div> <!-- Circle for dark mode toggle -->
 
-    <div class="container">
+    <div class="container stats-container">
         <h1>Total Requests</h1>
         <p>The total number of requests made is: <span id="request-count">{{ count }}</span></p>
         <canvas id="request-chart" width="400" height="200"></canvas>
     </div>
+
+    <footer>
+        <div class="footer-container">
+            <p>&copy; 2024 Conversational Gemini Chat. All rights reserved.</p>
+        </div>
+    </footer>
 
     <script>
         const darkModeCircle = document.getElementById('dark-mode-circle');
