@@ -7,6 +7,7 @@ import json
 from datetime import datetime
 import io
 import re
+import markdownify
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -106,7 +107,7 @@ def request_data():
 @app.route('/download-chat-history')
 def download_chat_history():
     chat_history = session.get('chat_history', [])
-    chat_history_text = "\n".join([f"{msg['role']}: {re.sub('<[^<]+?>', '', msg['parts'][0])}" for msg in chat_history])
+    chat_history_text = "\n".join([f"{msg['role']}: {markdownify.markdownify(msg['parts'][0])}" for msg in chat_history])
     chat_history_io = io.StringIO(chat_history_text)
     return send_file(io.BytesIO(chat_history_io.getvalue().encode()), mimetype='text/plain', as_attachment=True, download_name='chat_history.txt')
 
