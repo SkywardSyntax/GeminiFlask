@@ -37,3 +37,28 @@ Here are some screenshots of the improved chat application:
 
 ![Chat Application Screenshot 1](screenshots/screenshot1.png)
 ![Chat Application Screenshot 2](screenshots/screenshot2.png)
+
+## New Feature: Summary Generation
+
+We have added a new feature to the chat application that allows users to generate a summary of their chat history.
+
+### How to Use the Summary Generation Feature
+
+1. Engage in a conversation with the chat model.
+2. Once the model has responded, a "Generate Summary" button will appear below the chat form.
+3. Click the "Generate Summary" button to request a summary of the chat history.
+4. The summary will be generated using the Gemini API and displayed in the chat container.
+
+### Technical Details
+
+- The summary generation feature is implemented in `app.py`, `templates/index.html`, `static/main.css`, and `README.md`.
+- A new route `/generate-summary` is added to handle summary generation requests.
+- The Gemini API is used to generate a summary of the chat history.
+- The summary is returned as a JSON response and displayed in the chat container.
+
+### Screenshots
+
+Here are some screenshots of the summary generation feature:
+
+![Summary Generation Screenshot 1](screenshots/summary_screenshot1.png)
+![Summary Generation Screenshot 2](screenshots/summary_screenshot2.png)

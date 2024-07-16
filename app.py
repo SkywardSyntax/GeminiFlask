@@ -115,5 +115,16 @@ def download_chat_history():
     chat_history_io = io.StringIO(chat_history_text)
     return send_file(io.BytesIO(chat_history_io.getvalue().encode()), mimetype='text/plain', as_attachment=True, download_name='chat_history.txt')
 
+@app.route('/generate-summary', methods=['POST'])
+def generate_summary():
+    chat_history = session.get('chat_history', [])
+    chat_history_text = "\n".join([markdownify.markdownify(msg['parts'][0]) for msg in chat_history])
+
+    # Generate summary using Gemini API
+    model = genai.GenerativeModel('gemini-1.5-flash')
+    summary = model.summarize(chat_history_text)
+
+    return jsonify({'summary': summary.text})
+
 if __name__ == '__main__':
     app.run(debug=True)

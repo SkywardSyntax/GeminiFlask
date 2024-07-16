@@ -44,6 +44,7 @@
             <button type="submit" name="clear-history" value="clear">&#128465;</button> <!-- Trash can icon -->
         </form>
         <button id="download-chat-history" style="display: {{ 'block' if model_responded else 'none' }};">Download Chat History</button> <!-- New button for downloading chat history -->
+        <button id="generate-summary" style="display: {{ 'block' if model_responded else 'none' }};">Generate Summary</button> <!-- New button for generating summary -->
     </div>
 
     <script>
@@ -53,6 +54,7 @@
         const darkModeCircle = document.getElementById('dark-mode-circle');
         const typingIndicator = document.getElementById('typing-indicator');
         const downloadButton = document.getElementById('download-chat-history'); // New button element
+        const summaryButton = document.getElementById('generate-summary'); // New button element
 
         chatForm.addEventListener('submit', (event) => {
             event.preventDefault();
@@ -76,6 +78,7 @@
                 hideTypingIndicator();
                 clearForm.style.display = 'block'; // Show the clear history button after the model responds
                 downloadButton.style.display = 'block'; // Show the download button after the model responds
+                summaryButton.style.display = 'block'; // Show the summary button after the model responds
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -124,6 +127,20 @@
                 .catch(error => console.error('Error downloading chat history:', error));
         });
 
+        summaryButton.addEventListener('click', () => { // Event listener for summary button
+            fetch('/generate-summary', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                displayMessage('summary', data.summary);
+            })
+            .catch(error => console.error('Error generating summary:', error));
+        });
+
         function displayMessage(role, message) {
             const messageContainer = document.createElement('div');
             messageContainer.classList.add('message-container');
@@ -131,7 +148,7 @@
 
             const messageElement = document.createElement('p');
             messageElement.classList.add('message');
-            messageElement.innerHTML = `${role === 'user' ? 'You' : 'Bot'}: ${message}`;
+            messageElement.innerHTML = `${role === 'user' ? 'You' : role === 'model' ? 'Bot' : 'Summary'}: ${message}`;
 
             messageContainer.appendChild(messageElement);
             chatContainer.appendChild(messageContainer);
