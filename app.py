@@ -38,6 +38,10 @@ def index():
     global model_responded
     chat_history = session.get('chat_history', [])
 
+    # Set the model_responded flag to True if there is at least one model message in the chat history
+    if any(message['role'] == 'model' for message in chat_history):
+        model_responded = True
+
     if request.method == 'POST':
         if 'clear-history' in request.form:
             session['chat_history'] = []

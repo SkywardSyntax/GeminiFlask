@@ -40,7 +40,7 @@
             <input type="text" id="message" name="message" placeholder="Enter your message" required>
             <button type="submit">&#9650;</button> <!-- Up arrow icon -->
         </form>
-        <form id="clear-form" method="POST" style="display: none;"> <!-- Initially hidden -->
+        <form id="clear-form" method="POST" style="display: {{ 'block' if model_responded else 'none' }};"> <!-- Initially hidden -->
             <button type="submit" name="clear-history" value="clear">&#128465;</button> <!-- Trash can icon -->
         </form>
         <button id="download-chat-history" style="display: {{ 'block' if model_responded else 'none' }};">Download Chat History</button> <!-- New button for downloading chat history -->
