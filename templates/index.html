@@ -38,10 +38,10 @@
 
         <form id="chat-form" method="POST">
             <input type="text" id="message" name="message" placeholder="Enter your message" required>
-            <button type="submit">&#9650;</button> <!-- Up arrow icon -->
+            <button type="submit">▲</button> <!-- Up arrow icon -->
         </form>
         <form id="clear-form" method="POST" style="display: {{ 'block' if model_responded else 'none' }};"> <!-- Initially hidden -->
-            <button type="submit" name="clear-history" value="clear">&#128465;</button> <!-- Trash can icon -->
+            <button type="submit" name="clear-history" value="clear"></button> <!-- Trash can icon -->
         </form>
         <button id="download-chat-history" style="display: {{ 'block' if model_responded else 'none' }};">Download Chat History</button> <!-- New button for downloading chat history -->
         <button id="generate-summary" style="display: {{ 'block' if model_responded else 'none' }};">Generate Summary</button> <!-- New button for generating summary -->
@@ -128,6 +128,7 @@
         });
 
         summaryButton.addEventListener('click', () => { // Event listener for summary button
+            showTypingIndicator();
             fetch('/generate-summary', {
                 method: 'POST',
                 headers: {
@@ -137,8 +138,12 @@
             .then(response => response.json())
             .then(data => {
                 displayMessage('summary', data.summary);
+                hideTypingIndicator();
             })
-            .catch(error => console.error('Error generating summary:', error));
+            .catch(error => {
+                console.error('Error generating summary:', error);
+                hideTypingIndicator();
+            });
         });
 
         function displayMessage(role, message) {
