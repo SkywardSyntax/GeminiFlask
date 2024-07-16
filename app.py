@@ -1,10 +1,11 @@
 import os
 import google.generativeai as genai
-from flask import Flask, render_template, request, session, jsonify
+from flask import Flask, render_template, request, session, jsonify, send_file
 from flask_session import Session
 import markdown
 import json
 from datetime import datetime
+import io
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -100,6 +101,13 @@ def request_data():
     with open('request_data.json', 'r') as f:
         data = json.load(f)
     return jsonify(data)
+
+@app.route('/download-chat-history')
+def download_chat_history():
+    chat_history = session.get('chat_history', [])
+    chat_history_text = "\n".join([f"{msg['role']}: {msg['parts'][0]}" for msg in chat_history])
+    chat_history_io = io.StringIO(chat_history_text)
+    return send_file(io.BytesIO(chat_history_io.getvalue().encode()), mimetype='text/plain', as_attachment=True, download_name='chat_history.txt')
 
 if __name__ == '__main__':
     app.run(debug=True)
