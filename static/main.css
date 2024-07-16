@@ -419,3 +419,28 @@ body.dark-mode #latest-messages li {
     background-color: #444;
     box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
 }
+
+/* Styles for the loading indicator */
+.loading-indicator {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.loading-indicator .dot {
+    width: 8px;
+    height: 8px;
+    margin: 0 2px;
+    background-color: #ccc;
+    border-radius: 50%;
+    animation: typing 1.4s infinite ease-in-out both;
+}
+
+.loading-indicator .dot:nth-child(1) {
+    animation-delay: -0.32s;
+}
+
+.loading-indicator .dot:nth-child(2) {
+    animation-delay: -0.16s;
+}
