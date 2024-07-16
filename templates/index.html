@@ -109,6 +109,8 @@
 
         darkModeCircle.addEventListener('click', () => {
             document.body.classList.toggle('dark-mode');
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDarkMode ? 'enabled' : 'disabled');
         });
 
         downloadButton.addEventListener('click', () => { // Event listener for download button
@@ -174,6 +176,11 @@
             const savedChatHistory = JSON.parse(sessionStorage.getItem('chatHistory'));
             if (savedChatHistory) {
                 chatContainer.innerHTML = savedChatHistory;
+            }
+
+            const darkMode = localStorage.getItem('darkMode');
+            if (darkMode === 'enabled') {
+                document.body.classList.add('dark-mode');
             }
         });
     </script>

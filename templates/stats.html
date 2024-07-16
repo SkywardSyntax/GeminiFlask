@@ -37,6 +37,8 @@
 
         darkModeCircle.addEventListener('click', () => {
             document.body.classList.toggle('dark-mode');
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDarkMode ? 'enabled' : 'disabled');
         });
 
         function updateRequestCount() {
@@ -100,6 +102,13 @@
         setInterval(updateRequestCount, 5000); // Update every 5 seconds
         setInterval(updateRequestChart, 60000); // Update chart every minute
         setInterval(updateLatestMessages, 10000); // Update latest messages every 10 seconds
+
+        window.addEventListener('load', () => {
+            const darkMode = localStorage.getItem('darkMode');
+            if (darkMode === 'enabled') {
+                document.body.classList.add('dark-mode');
+            }
+        });
     </script>
 </body>
 </html>
