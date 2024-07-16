@@ -50,6 +50,7 @@ h1 {
     animation: fadeIn 0.5s ease, slideInRight 0.5s ease; /* P991f */
     align-self: flex-end;
     word-wrap: break-word; /* Pca40 */
+    cursor: pointer; /* Pd692 */
 }
 
 .bot-message {
@@ -64,6 +65,7 @@ h1 {
     animation: fadeIn 0.5s ease, slideInLeft 0.5s ease; /* P991f */
     align-self: flex-start;
     word-wrap: break-word; /* Pb9c7 */
+    cursor: pointer; /* Pd692 */
 }
 
 input[type="text"] {

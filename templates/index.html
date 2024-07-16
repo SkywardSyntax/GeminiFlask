@@ -19,11 +19,11 @@
         <div id="chat-container">
             {% for message in chat_history %}
                 {% if message.role == 'model' %}
-                    <div class="message-container bot-message">
+                    <div class="message-container bot-message" data-role="model">
                         <p class="message">Bot: {{ message.parts[0]|safe }}</p>
                     </div>
                 {% elif message.role == 'user' %}
-                    <div class="message-container user-message">
+                    <div class="message-container user-message" data-role="user">
                         <p class="message">You: {{ message.parts[0]|safe }}</p>
                     </div>
                 {% endif %}
@@ -152,6 +152,7 @@
             const messageContainer = document.createElement('div');
             messageContainer.classList.add('message-container');
             messageContainer.classList.add(role === 'user' ? 'user-message' : 'bot-message');
+            messageContainer.setAttribute('data-role', role); // Add data-role attribute
 
             const messageElement = document.createElement('p');
             messageElement.classList.add('message');
@@ -181,6 +182,19 @@
             const darkMode = localStorage.getItem('darkMode');
             if (darkMode === 'enabled') {
                 document.body.classList.add('dark-mode');
+            }
+        });
+
+        // Event listener to copy plaintext to clipboard when a message is clicked
+        chatContainer.addEventListener('click', (event) => {
+            const messageElement = event.target.closest('.message-container');
+            if (messageElement) {
+                const messageText = messageElement.textContent.replace(/^(You|Bot|Summary):\s*/, ''); // Remove role prefix
+                navigator.clipboard.writeText(messageText).then(() => {
+                    console.log('Message copied to clipboard:', messageText);
+                }).catch(err => {
+                    console.error('Error copying message to clipboard:', err);
+                });
             }
         });
     </script>
