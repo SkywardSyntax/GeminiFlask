@@ -43,7 +43,7 @@
         <form id="clear-form" method="POST" style="display: none;"> <!-- Initially hidden -->
             <button type="submit" name="clear-history" value="clear">&#128465;</button> <!-- Trash can icon -->
         </form>
-        <button id="download-chat-history">Download Chat History</button> <!-- New button for downloading chat history -->
+        <button id="download-chat-history" style="display: {{ 'block' if model_responded else 'none' }};">Download Chat History</button> <!-- New button for downloading chat history -->
     </div>
 
     <script>
@@ -75,6 +75,7 @@
                 displayMessage('model', data.answer);
                 hideTypingIndicator();
                 clearForm.style.display = 'block'; // Show the clear history button after the model responds
+                downloadButton.style.display = 'block'; // Show the download button after the model responds
             })
             .catch(error => {
                 console.error('Error:', error);
