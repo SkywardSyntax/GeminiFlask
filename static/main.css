@@ -58,7 +58,7 @@ h1 {
     color: #2196F3;
     margin: 5px 0;
     padding: 5px 10px;
-    background-color: #e3f2fd;
+    background-color: rgba(255, 255, 255, 0.3); /* P9800 */
     border-radius: 15px 15px 15px 0;
     display: inline-block;
     max-width: 80%;
@@ -66,6 +66,8 @@ h1 {
     align-self: flex-start;
     word-wrap: break-word; /* Pb9c7 */
     cursor: pointer; /* Pd692 */
+    backdrop-filter: blur(10px); /* P3aca */
+    -webkit-backdrop-filter: blur(10px); /* Pbceb */
 }
 
 input[type="text"] {
