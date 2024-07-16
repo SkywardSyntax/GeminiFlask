@@ -122,9 +122,15 @@ def generate_summary():
 
     # Generate summary using Gemini API
     model = genai.GenerativeModel('gemini-1.5-flash')
-    summary = model.summarize(chat_history_text)
+    chat = model.start_chat(history=[])  # Start a new chat
 
-    return jsonify({'summary': summary.text})
+    # Send a message to Gemini to summarize the chat history
+    summary_request = f"Please summarize the following conversation:\n\n{chat_history_text}"
+    response = chat.send_message({"role": "user", "parts": [summary_request]})
+
+    summary = response.text
+
+    return jsonify({'summary': summary})
 
 if __name__ == '__main__':
     app.run(debug=True)
