@@ -20,6 +20,10 @@
         <h1>Total Requests</h1>
         <p>The total number of requests made is: <span id="request-count">{{ count }}</span></p>
         <canvas id="request-chart" width="400" height="200"></canvas>
+        <h2>Latest User Messages and Bot Responses</h2>
+        <ul id="latest-messages">
+            <!-- Dynamically populated list of messages -->
+        </ul>
     </div>
 
     <footer>
@@ -79,8 +83,23 @@
                 .catch(error => console.error('Error fetching request data:', error));
         }
 
+        function updateLatestMessages() {
+            fetch('/request-data')
+                .then(response => response.json())
+                .then(data => {
+                    const latestMessagesList = document.getElementById('latest-messages');
+                    latestMessagesList.innerHTML = ''; // Clear existing list
+                    data.user_messages.slice(-5).forEach((message, index) => {
+                        const botResponse = data.bot_responses[data.bot_responses.length - 5 + index];
+                        latestMessagesList.innerHTML += `<li>User: ${message}<br>Bot: ${botResponse}</li>`;
+                    });
+                })
+                .catch(error => console.error('Error fetching latest messages:', error));
+        }
+
         setInterval(updateRequestCount, 5000); // Update every 5 seconds
         setInterval(updateRequestChart, 60000); // Update chart every minute
+        setInterval(updateLatestMessages, 10000); // Update latest messages every 10 seconds
     </script>
 </body>
 </html>
