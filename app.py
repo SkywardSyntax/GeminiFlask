@@ -100,7 +100,9 @@ def stats():
         data = json.load(f)
     latest_user_messages = data["user_messages"][-5:]
     latest_bot_responses = data["bot_responses"][-5:]
-    return render_template('stats.html', count=count, latest_user_messages=latest_user_messages, latest_bot_responses=latest_bot_responses)
+    timestamps = data["timestamps"]
+    counts = data["counts"]
+    return render_template('stats.html', count=count, latest_user_messages=latest_user_messages, latest_bot_responses=latest_bot_responses, timestamps=timestamps, counts=counts)
 
 @app.route('/request-count')
 def request_count():
