@@ -111,3 +111,95 @@ Here are some screenshots of the latest messages feature:
 
 ![Latest Messages Screenshot 1](screenshots/latest_messages_screenshot1.png)
 ![Latest Messages Screenshot 2](screenshots/latest_messages_screenshot2.png)
+
+## New Feature: Download Chat History
+
+We have added a new feature to the chat application that allows users to download their chat history.
+
+### How to Use the Download Chat History Feature
+
+1. Engage in a conversation with the chat model.
+2. Once the model has responded, a "Download Chat History" button will appear below the chat form.
+3. Click the "Download Chat History" button to download the chat history as a text file.
+
+### Technical Details
+
+- The download chat history feature is implemented in `app.py`, `templates/index.html`, `static/main.css`, and `README.md`.
+- A new route `/download-chat-history` is added to handle chat history download requests.
+- The chat history is converted to a text file and sent as a response.
+- The text file is downloaded to the user's device.
+
+### Screenshots
+
+Here are some screenshots of the download chat history feature:
+
+![Download Chat History Screenshot 1](screenshots/download_chat_history_screenshot1.png)
+![Download Chat History Screenshot 2](screenshots/download_chat_history_screenshot2.png)
+
+## Dark Mode Toggle
+
+We have added a dark mode toggle feature to the chat application.
+
+### How to Use the Dark Mode Toggle Feature
+
+1. Click the circle in the top right corner of the screen to toggle dark mode.
+2. The chat application will switch between light mode and dark mode.
+
+### Technical Details
+
+- The dark mode toggle feature is implemented in `templates/index.html`, `templates/stats.html`, `static/main.css`, and `README.md`.
+- A circle is added to the top right corner of the screen to toggle dark mode.
+- The dark mode styles are applied to the chat application.
+
+### Screenshots
+
+Here are some screenshots of the dark mode toggle feature:
+
+![Dark Mode Toggle Screenshot 1](screenshots/dark_mode_toggle_screenshot1.png)
+![Dark Mode Toggle Screenshot 2](screenshots/dark_mode_toggle_screenshot2.png)
+
+## Typing Indicator
+
+We have added a typing indicator to the chat application to show when the model is generating a response.
+
+### How to Use the Typing Indicator
+
+1. Engage in a conversation with the chat model.
+2. When the model is generating a response, a typing indicator will appear below the chat container.
+3. The typing indicator will disappear once the model has responded.
+
+### Technical Details
+
+- The typing indicator is implemented in `templates/index.html`, `static/main.css`, and `README.md`.
+- A typing indicator is added below the chat container to show when the model is generating a response.
+- The typing indicator is displayed and hidden using JavaScript.
+
+### Screenshots
+
+Here are some screenshots of the typing indicator:
+
+![Typing Indicator Screenshot 1](screenshots/typing_indicator_screenshot1.png)
+![Typing Indicator Screenshot 2](screenshots/typing_indicator_screenshot2.png)
+
+## Markdown Conversion for Messages and Responses
+
+We have added markdown conversion for user messages and bot responses to enhance the formatting of the chat messages.
+
+### How to Use the Markdown Conversion Feature
+
+1. Engage in a conversation with the chat model.
+2. Enter your message using markdown syntax.
+3. The message and response will be displayed with the appropriate formatting.
+
+### Technical Details
+
+- The markdown conversion feature is implemented in `app.py` and `README.md`.
+- User messages and bot responses are converted to markdown using the `markdown` library.
+- The converted messages are displayed in the chat container.
+
+### Screenshots
+
+Here are some screenshots of the markdown conversion feature:
+
+![Markdown Conversion Screenshot 1](screenshots/markdown_conversion_screenshot1.png)
+![Markdown Conversion Screenshot 2](screenshots/markdown_conversion_screenshot2.png)

@@ -448,3 +448,71 @@ body.dark-mode #latest-messages li {
 .loading-indicator .dot:nth-child(2) {
     animation-delay: -0.16s;
 }
+
+/* Styles for the "time expired" page */
+.time-expired-container {
+    text-align: center;
+    padding: 50px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.time-expired-container h1 {
+    font-size: 2.5em;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.time-expired-container p {
+    font-size: 1.2em;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.time-expired-container button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.time-expired-container button:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
+
+.time-expired-container button:active {
+    transform: scale(0.95);
+}
+
+body.dark-mode .time-expired-container {
+    background-color: #555;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .time-expired-container h1 {
+    color: #fff;
+}
+
+body.dark-mode .time-expired-container p {
+    color: #ccc;
+}
+
+body.dark-mode .time-expired-container button {
+    background-color: #777;
+}
+
+body.dark-mode .time-expired-container button:hover {
+    background-color: #888;
+}
+
+body.dark-mode .time-expired-container button:active {
+    background-color: #999;
+}

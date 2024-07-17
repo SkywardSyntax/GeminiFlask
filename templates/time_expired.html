@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Session Expired</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Session Expired</h1>
+        <p>Your session has expired. Please return to the main page to start a new session.</p>
+        <button onclick="window.location.href='/'">Return to Main Page</button>
+    </div>
+</body>
+</html>

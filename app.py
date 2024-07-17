@@ -1,10 +1,10 @@
 import os
 import google.generativeai as genai
-from flask import Flask, render_template, request, session, jsonify, send_file
+from flask import Flask, render_template, request, session, jsonify, send_file, redirect, url_for
 from flask_session import Session
 import markdown
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 import io
 import re
 import markdownify
@@ -41,6 +41,12 @@ def index():
     # Set the model_responded flag to True if there is at least one model message in the chat history
     if any(message['role'] == 'model' for message in chat_history):
         model_responded = True
+
+    # Check if the session timer has expired
+    if 'timer_start' in session:
+        timer_start = session['timer_start']
+        if datetime.now() - timer_start > timedelta(minutes=5):
+            return redirect(url_for('time_expired'))
 
     if request.method == 'POST':
         if 'clear-history' in request.form:
@@ -88,6 +94,10 @@ def index():
             model_responded = True
 
             return jsonify({'answer': bot_response_markdown})
+
+    # Start the session timer when the page loads
+    if 'timer_start' not in session:
+        session['timer_start'] = datetime.now()
 
     chat_history = session.get('chat_history', [])
     return render_template('index.html', chat_history=chat_history, model_responded=model_responded)
@@ -147,6 +157,10 @@ def latest_messages():
     latest_user_messages = data["user_messages"][-5:]
     latest_bot_responses = data["bot_responses"][-5:]
     return jsonify({'user_messages': latest_user_messages, 'bot_responses': latest_bot_responses})
+
+@app.route('/time-expired')
+def time_expired():
+    return render_template('time_expired.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
