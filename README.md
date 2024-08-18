@@ -12,6 +12,51 @@ To run this application:
 flask --debug run
 ```
 
+## Obtaining a Gemini API Key from Google AI Studio
+
+To run this project, you need to obtain a Gemini API Key from Google AI Studio. Follow these steps:
+
+1. Go to the [Google AI Studio](https://ai.google.com/studio) website.
+2. Sign in with your Google account.
+3. Navigate to the "API Keys" section.
+4. Click on "Create API Key" and follow the instructions.
+5. Copy the generated API Key.
+
+## Setting the GEMINI_API Environment Variable
+
+After obtaining the Gemini API Key, you need to set it as an environment variable. Follow these steps:
+
+### On Windows
+
+1. Open Command Prompt.
+2. Run the following command:
+   ```
+   setx GEMINI_API "YOUR_API_KEY"
+   ```
+3. Restart your Command Prompt or IDE to apply the changes.
+
+### On macOS and Linux
+
+1. Open Terminal.
+2. Run the following command:
+   ```
+   export GEMINI_API="YOUR_API_KEY"
+   ```
+3. Add the above line to your shell configuration file (e.g., `.bashrc`, `.zshrc`) to make it persistent.
+
+## Running the Flask Application
+
+To run the Flask application, follow these steps:
+
+1. Ensure you have Python and Flask installed on your system.
+2. Set the `GEMINI_API` environment variable as described above.
+3. Navigate to the project directory in your terminal.
+4. Run the following command to start the Flask application:
+   ```
+   flask --debug run
+   ```
+5. Open your web browser and go to `http://localhost:5000` to access the application.
+
 ## Visual Improvements
 
 We have made several visual improvements to the chat application to enhance its appearance and user experience.
@@ -56,12 +101,7 @@ We have added a new feature to the chat application that allows users to generat
 - The Gemini API is used to generate a summary of the chat history.
 - The summary is returned as a JSON response and displayed in the chat container.
 
-### Screenshots
 
-Here are some screenshots of the summary generation feature:
-
-![Summary Generation Screenshot 1](screenshots/summary_screenshot1.png)
-![Summary Generation Screenshot 2](screenshots/summary_screenshot2.png)
 
 ## New Animations
 
