@@ -237,9 +237,5 @@ We have added markdown conversion for user messages and bot responses to enhance
 - User messages and bot responses are converted to markdown using the `markdown` library.
 - The converted messages are displayed in the chat container.
 
-### Screenshots
-
-Here are some screenshots of the markdown conversion feature:
-
-![Markdown Conversion Screenshot 1](screenshots/markdown_conversion_screenshot1.png)
-![Markdown Conversion Screenshot 2](screenshots/markdown_conversion_screenshot2.png)
+### Demo
+![demo](demo.png)
