@@ -239,3 +239,7 @@ We have added markdown conversion for user messages and bot responses to enhance
 
 ### Demo
 ![demo](demo.png)
+
+## Use the Demo!
+Please visit http://40.76.46.99 to use the demo version of this application.
+Please be responsible with your usage of this application
